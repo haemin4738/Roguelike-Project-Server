@@ -1,19 +1,15 @@
 from typing import Optional
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 
 
 class UserCreate(BaseModel):
-    email: EmailStr
+    username: str
     password: str
 
 
 class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
-
-
-class MessageResponse(BaseModel):
-    message: str
 
 
 class PlayerDataResponse(BaseModel):
