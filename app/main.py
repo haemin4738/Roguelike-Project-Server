@@ -1,9 +1,17 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
 from app.database import Base, engine
 from app.routers import auth, player
 
-Base.metadata.create_all(bind=engine)  # 개발용, 프로덕션은 alembic
+Base.metadata.create_all(bind=engine)
+
+# 기존 DB에 새 컬럼 추가 (IF NOT EXISTS — 재시작해도 안전)
+with engine.connect() as conn:
+    conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verified BOOLEAN NOT NULL DEFAULT TRUE"))
+    conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS verification_token VARCHAR"))
+    conn.execute(text("ALTER TABLE users ALTER COLUMN username DROP NOT NULL"))
+    conn.commit()
 
 app = FastAPI(title="Roguelike API")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
