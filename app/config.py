@@ -8,5 +8,4 @@ DATABASE_URL = _raw_url.replace("postgresql://", "postgresql+psycopg://", 1) if 
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 1440
-GMAIL_USER = os.getenv("GMAIL_USER", "")
-GMAIL_PASSWORD = os.getenv("GMAIL_PASSWORD", "")
+RESEND_API_KEY = os.getenv("RESEND_API_KEY", "")
